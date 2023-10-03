@@ -19,6 +19,38 @@ document.body.appendChild(renderer.domElement)
 
 const controls = new OrbitControls(camera, renderer.domElement)
 // controls.addEventListener('change', render)
+// Add ambient light
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+// Add directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(1, 1, 1);
+scene.add(directionalLight);
+
+////////////////////////////////////
+// adding sphere with maps
+
+// Create an iframe for Google Maps
+// Get the map container and append the iframe
+const mapContainer = document.getElementById('map');
+
+// Create a texture from the map container
+if (mapContainer) {
+
+    const mapImageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=0,0&zoom=1&fullscreenControl=true&zoomControl=true&size=1024x512&key=AIzaSyC5tzXmZgC3LUtj1cHN6penyIMtCEsOFow`;
+
+    const mapTexture = new THREE.TextureLoader().load(mapImageUrl);
+    
+    const sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
+    // const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+    const sphereMaterial = new THREE.MeshBasicMaterial({ map: mapTexture });
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    scene.add(sphere);
+
+    sphere.position.set(0, 0, 0);
+    camera.position.set(0, 0, 15);
+} ////////////////////////////////////
 
 const geometry = new THREE.BoxGeometry()
 const material = new THREE.MeshBasicMaterial({
